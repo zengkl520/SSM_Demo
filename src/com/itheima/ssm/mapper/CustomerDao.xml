@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.ssm.mapper.CustomerDao">
+
+<!-- 
+	//总条数
+	public Integer customerCount(QueryVo vo);
+    private String custName;
+	private String custSource;
+	private String custIndustry;
+	private String custLevel;
+	
+	
+	//结果集
+	public List<Customer> selectCustomerListByQueryVo(QueryVo vo);
+ -->
+    <!-- 查询 -->
+    <select id="customerCount" parameterType="QueryVo" resultType="Integer">
+    SELECT count(*) FROM customer
+    <where>
+      <if test="custName != null and custName!='' ">
+       cust_name like "%"#{custName}"%"
+      </if>
+      <if test="custSource != null and custSource !='' ">
+     and  cust_source = #{custSource}
+      </if>
+      <if test="custIndustry != null and custIndustry !='' ">
+     and  cust_industry = #{custIndustry}
+      </if>
+      <if test="custLevel != null and custLevel !='' ">
+     and  cust_level = #{custLevel}
+      </if>
+    
+    </where>
+    
+    </select>
+    
+    
+        <select id="selectCustomerListByQueryVo" parameterType="QueryVo" resultType="Customer">
+    SELECT * FROM customer
+    <where>
+      <if test="custName != null and custName!='' ">
+       cust_name like "%"#{custName}"%"
+      </if>
+      <if test="custSource != null and custSource !=''  ">
+     and  cust_source = #{custSource}
+      </if>
+      <if test="custIndustry != null and custIndustry !=''  ">
+     and  cust_industry = #{custIndustry}
+      </if>
+      <if test="custLevel != null and custLevel !=''  ">
+     and  cust_level = #{custLevel}
+      </if>
+    
+    </where>
+    limit #{startRow},#{size}
+    </select>
+    
+    <!-- 
+    //通过id查询用户
+	public Customer selectCustomerById(Integer id);
+     -->
+             <select id="selectCustomerById" parameterType="Integer" resultType="Customer">
+    SELECT * FROM customer
+    <where>
+      
+       cust_id = #{cust_id}
+
+    </where>
+    </select>
+     
+     <!-- 
+     //修改客户通过id
+	public void updateCustomerById(Customer customer);
+      -->
+
+     <update id="updateCustomerById" parameterType="Customer">
+       update customer 
+       <set>
+          <if test="cust_name !=null">
+             cust_name=#{cust_name},
+          </if>
+          <if test="cust_linkman !=null">
+             cust_linkman=#{cust_linkman}
+          </if>
+          
+       </set>
+       <where>
+         cust_id = #{cust_id}
+       </where>
+     </update>
+     
+     <!-- 删除
+     	//通过id删除用户
+	public Customer deleteCustomerById(Integer id);
+      -->
+      <delete id="deleteCustomerById" parameterType="Integer">
+         delete from customer where cust_id=#{cust_id}
+      </delete>
+      
+</mapper>
